@@ -1,4 +1,4 @@
-name: Verify Database Data Workflow
+name: Eu Regulations with Compliance Workflow
 
 on:
   push:        # Run whenever code is pushed
@@ -34,7 +34,7 @@ jobs:
 
       # Step 4: Run compliance script
       - name: Run compliance alerts script
-        run: python verify_eu_reg_data.py
+        run: python eu_regulations_with_compliance_alerts.py
 
       # Step 5: Save results as artifact (optional)
       - name: Upload compliance database
