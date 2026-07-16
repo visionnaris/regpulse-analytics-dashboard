@@ -36,9 +36,20 @@ cursor.executemany("""
 INSERT INTO EU_Regulations (regulation_article, framework, effective_date, department_impacted, key_focus, penalty_range)
 VALUES (?, ?, ?, ?, ?, ?);
 """, regulations_data)
+print("✅ EU_Regulations database created and populated successfully!")
 
 # Step 5: Commit changes and close the connection
 connection.commit()
+
+conn = sqlite3.connect("EU_Regulations.db")
+cur = conn.cursor()
+cur.execute("SELECT * FROM EU_Regulations;")
+for row in cur.fetchall():
+    print(row)
+
+print("✅ EU_Regulations data verified successfully!")
+
+conn.close()
 connection.close()
 
-print("✅ EU_Regulations database created and populated successfully!")
+
