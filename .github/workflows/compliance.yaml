@@ -34,13 +34,17 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      # Step 4: Run compliance script
-      - name: Run compliance alerts script
-        run: python eu_regulations.py
+      # # Step 4: Run compliance script
+      # - name: Run compliance alerts script
+      #   run: python eu_regulations.py
 
-      # Step 5: Save results as artifact (optional)
-      # - name: Upload compliance database
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: EU_Regulations_DB
-      #     path: EU_Regulations.db
+     # Step 5: Run Email Notification script
+      - name: Run email notification script
+        run: python automated_email_notification_to_compliance_officer.py
+        
+     # Step 6: Save results as artifact (optional)
+      - name: Upload compliance database
+        uses: actions/upload-artifact@v4
+        with:
+          name: EU_Regulations_DB
+          path: EU_Regulations.db
