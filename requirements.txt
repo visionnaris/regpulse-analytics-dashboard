@@ -5,4 +5,4 @@ pandas>=2.1.2
 python-dotenv>=1.0.0
 SQLAlchemy>=2.0.15
 # Optional: include only if the runner is missing the stdlib sqlite3 extension
-pysqlite3-binary>=1.0.3
+# pysqlite3-binary>=1.0.3
