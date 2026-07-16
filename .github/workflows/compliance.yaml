@@ -1,4 +1,4 @@
-name: Compliance Alerts
+name: Compliance Alerts Workflow
 
 on:
   push:        # Run whenever code is pushed
