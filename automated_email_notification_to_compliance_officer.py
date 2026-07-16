@@ -89,7 +89,7 @@ msg.attach(MIMEText(email_body, 'plain'))
 try:
     server = smtplib.SMTP('smtp.gmail.com', 587)  # Example: Gmail SMTP
     server.starttls()
-    server.login("your_email@example.com", "your_password_or_app_password")
+    server.login(email_user, 's107s310162bsahu')
     server.send_message(msg)
     server.quit()
     print("📧 Compliance alert email sent successfully!")
