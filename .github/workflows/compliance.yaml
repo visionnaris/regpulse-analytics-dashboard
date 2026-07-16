@@ -33,8 +33,8 @@ jobs:
         run: python eu_regulations.py
 
       # Step 5: Save results as artifact (optional)
-      - name: Upload compliance database
-        uses: actions/upload-artifact@v3
-        with:
-          name: EU_Regulations_DB
-          path: EU_Regulations.db
+      # - name: Upload compliance database
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: EU_Regulations_DB
+      #     path: EU_Regulations.db
