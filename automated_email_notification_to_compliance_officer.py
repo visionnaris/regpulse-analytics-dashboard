@@ -3,6 +3,9 @@ from datetime import datetime
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import os
+email_user = os.getenv("EMAIL_USER")
+email_pass = os.getenv("EMAIL_PASS")
 
 # Step 1: Connect to the database
 connection = sqlite3.connect("EU_Regulations.db")
@@ -33,8 +36,8 @@ connection.close()
 email_body = "\n".join(alerts) if alerts else "✅ No compliance alerts at this time."
 
 msg = MIMEMultipart()
-msg['From'] = "your_email@example.com"
-msg['To'] = "compliance_officer@example.com"
+msg['From'] = "sonali.310162@gmail.com"
+msg['To'] = "sonalisahu0512@gmail.com" #email_user #"compliance_officer@example.com"
 msg['Subject'] = "EU Regulations Compliance Alerts - Deutsche Bank"
 
 msg.attach(MIMEText(email_body, 'plain'))
