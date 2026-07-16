@@ -7,30 +7,73 @@ import os
 email_user = os.getenv("EMAIL_USER")
 email_pass = os.getenv("EMAIL_PASS")
 
-# Step 1: Connect to the database
+
+# Step 1: Connect to (or create) the SQLite database
 connection = sqlite3.connect("EU_Regulations.db")
 cursor = connection.cursor()
 
-# Step 2: Fetch compliance alerts
+# Step 2: Create the EU_Regulations table
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS EU_Regulations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    regulation_article TEXT NOT NULL,
+    framework TEXT NOT NULL,
+    effective_date TEXT,
+    department_impacted TEXT,
+    key_focus TEXT,
+    penalty_range TEXT
+);
+""")
+
+# Step 3: Define the regulatory data
+regulations_data = [
+    ("Annex III (5)(b) – Creditworthiness Assessment", "EU AI Act", "2026-08-02", "Loans", "High-risk AI credit scoring; human oversight required", "€35M or 7% turnover"),
+    ("Article 27 – Fundamental Rights Impact Assessment", "EU AI Act", "2026-08-02", "Loans/Deposits", "FRIA for AI systems affecting access to finance", "€20M or 4% turnover"),
+    ("Article 50 – Transparency Obligations", "EU AI Act", "2026-12-02", "KYC", "Disclosure of automated decision-making to customers", "€10M or 2% turnover"),
+    ("Articles 5–14 – ICT Risk Management", "DORA", "2025-01-17", "All Departments", "ICT resilience, incident reporting, third-party risk", "2% turnover"),
+    ("Article 22 – Automated Decision-Making", "GDPR", "Ongoing", "Loans/KYC", "Human review for automated credit/KYC decisions", "€20M or 4% turnover"),
+    ("Article 35 – Data Protection Impact Assessment", "GDPR", "Ongoing", "KYC/Deposits", "DPIA for high-risk personal data processing", "€10M or 2% turnover"),
+    ("Annex III (1) – Biometric Identification Systems", "EU AI Act", "2026-08-02", "KYC", "Restricts facial recognition unless legally justified", "€35M or 7% turnover"),
+    ("Article 9 – Risk Management System", "EU AI Act", "2026-08-02", "Loans/Deposits", "Continuous risk monitoring for AI models", "€20M or 4% turnover"),
+    ("Article 14 – Human Oversight and Explainability", "EU AI Act", "2026-08-02", "Loans/Deposits", "Human intervention and explainable AI outputs", "€10M or 2% turnover"),
+    ("Article 11 – Data Governance and Quality Management", "EU AI Act + GDPR", "2026-08-02", "All Departments", "High-quality, unbiased training data for AI models", "€20M or 4% turnover")
+]
+
+# Step 4: Insert the data into the table
+cursor.executemany("""
+INSERT INTO EU_Regulations (regulation_article, framework, effective_date, department_impacted, key_focus, penalty_range)
+VALUES (?, ?, ?, ?, ?, ?);
+""", regulations_data)
+print("✅ EU_Regulations database created and populated successfully!")
+
+# Step 5: Commit changes and close the connection
+connection.commit()
+
+# Step 6: Connect to the database
+conn = sqlite3.connect("EU_Regulations.db")
+cur = conn.cursor()
+
+
+# Step 7: Fetch compliance alerts
 alerts = []
 
 # Penalty Alerts
-cursor.execute("SELECT regulation_article, penalty_range FROM EU_Regulations WHERE penalty_range LIKE '%35M%' OR penalty_range LIKE '%7% turnover%';")
-high_penalties = cursor.fetchall()
+cur.execute("SELECT regulation_article, penalty_range FROM EU_Regulations WHERE penalty_range LIKE '%35M%' OR penalty_range LIKE '%7% turnover%';")
+high_penalties = cur.fetchall()
 for reg in high_penalties:
     alerts.append(f"⚠️ High Penalty Risk: {reg[0]} → {reg[1]}")
 
 # Deadline Alerts (within 60 days)
 today = datetime.today()
-cursor.execute("SELECT regulation_article, effective_date FROM EU_Regulations WHERE effective_date NOT LIKE 'Ongoing';")
-deadlines = cursor.fetchall()
+cur.execute("SELECT regulation_article, effective_date FROM EU_Regulations WHERE effective_date NOT LIKE 'Ongoing';")
+deadlines = cur.fetchall()
 for reg in deadlines:
     effective_date = datetime.strptime(reg[1], "%Y-%m-%d")
     days_left = (effective_date - today).days
     if 0 < days_left <= 60:
         alerts.append(f"📅 Upcoming Deadline: {reg[0]} → {reg[1]} ({days_left} days left)")
 
-connection.close()
+conn.close()
 
 # Step 3: Prepare email content
 email_body = "\n".join(alerts) if alerts else "✅ No compliance alerts at this time."
@@ -52,3 +95,5 @@ try:
     print("📧 Compliance alert email sent successfully!")
 except Exception as e:
     print(f"❌ Error sending email: {e}")
+
+connection.close()
