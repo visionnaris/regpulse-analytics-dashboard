@@ -1,11 +1,9 @@
-name: Compliance Alerts Workflow
+name: Verify Database Data Workflow
 
 on:
   push:        # Run whenever code is pushed
     branches:
       - main
-  # schedule:    # Run daily at 9 AM UTC
-  #   - cron: "0 9 * * *"
 
 jobs:
   run-compliance-script:
