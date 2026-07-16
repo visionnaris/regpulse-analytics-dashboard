@@ -1,5 +1,5 @@
-name: Eu Regulations with Compliance Workflow
-
+# name: Eu Regulations with Compliance Workflow
+name: Send Email Notification Workflow
 on:
   push:        # Run whenever code is pushed
     branches:
@@ -32,9 +32,9 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      # Step 4: Run compliance script
-      - name: Run compliance alerts script
-        run: python eu_regulations_with_compliance_alerts.py
+      # Step 4: Run Email Notification script
+      - name: Run email notification script
+        run: python automated_email_notification_to_compliance_officer.py
 
       # Step 5: Save results as artifact (optional)
       - name: Upload compliance database
