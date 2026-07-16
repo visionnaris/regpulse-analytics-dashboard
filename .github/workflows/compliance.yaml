@@ -4,8 +4,8 @@ on:
   push:        # Run whenever code is pushed
     branches:
       - main
-  schedule:    # Run daily at 9 AM UTC
-    - cron: "0 9 * * *"
+  # schedule:    # Run daily at 9 AM UTC
+  #   - cron: "0 9 * * *"
 
 jobs:
   run-compliance-script:
