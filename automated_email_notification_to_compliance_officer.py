@@ -5,7 +5,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import os
 email_user = os.getenv("EMAIL_USER")
-email_pass = os.getenv("EMAIL_PASS")
+#email_pass = os.getenv("EMAIL_PASS")
 
 
 # Step 1: Connect to (or create) the SQLite database
