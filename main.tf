@@ -1,16 +1,13 @@
 terraform {
-  required_version = ">= 1.6.0"
-
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = ">= 5.50.0" 
+      version = "~> 5.43"
     }
   }
 }
 
 provider "google" {
-  skip_credentials_validation = true
   project = "tensile-oarlock-500904-d4"
   region  = "us-central1"
 }
